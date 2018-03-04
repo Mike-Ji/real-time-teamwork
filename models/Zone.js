@@ -3,7 +3,6 @@ var mongoose = require("mongoose");
 var ZoneSchema = new mongoose.Schema({
 	name: {type: String, default:''},
 	zipCodes: {type: Array, default:[]},
-	//location: {type: [Number]},
 	timestamp: {type: Date, default: Date.now}
 })
 
