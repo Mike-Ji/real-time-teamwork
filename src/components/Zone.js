@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import styles from './styles';
 
 class Zone extends Component{
+	
 	render(){
+		const zoneStyle = styles.zone;
 		return(
-			<div style={styles.container}>
-				<h2 style={styles.header}>
-					<a style={styles.title} href="#">
+			<div style={zoneStyle.container}>
+				<h2 style={zoneStyle.header}>
+					<a style={zoneStyle.title} href="#">
 						{this.props.currentZone.name}
 					</a>
 				</h2>

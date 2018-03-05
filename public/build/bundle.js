@@ -5512,16 +5512,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Zone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+
 	render() {
+		const zoneStyle = _styles__WEBPACK_IMPORTED_MODULE_1__["default"].zone;
 		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 			'div',
-			{ style: _styles__WEBPACK_IMPORTED_MODULE_1__["default"].container },
+			{ style: zoneStyle.container },
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'h2',
-				{ style: _styles__WEBPACK_IMPORTED_MODULE_1__["default"].header },
+				{ style: zoneStyle.header },
 				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 					'a',
-					{ style: _styles__WEBPACK_IMPORTED_MODULE_1__["default"].title, href: '#' },
+					{ style: zoneStyle.title, href: '#' },
 					this.props.currentZone.name
 				)
 			),
@@ -5612,20 +5614,24 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-	container: {
-		padding: 16,
-		backgorund: '#f9f9f9',
-		marginTop: 12,
-		border: '1px solid #ddd'
-	},
-	header: {
-		marginTop: 0,
-		marginBottom: 0
-	},
-	title: {
-		textDecoration: 'none',
-		color: 'red'
+	universal: {},
+	zone: {
+		container: {
+			padding: 16,
+			backgorund: '#f9f9f9',
+			marginTop: 12,
+			border: '1px solid #ddd'
+		},
+		header: {
+			marginTop: 0,
+			marginBottom: 0
+		},
+		title: {
+			textDecoration: 'none',
+			color: 'red'
+		}
 	}
+
 });
 
 /***/ })
