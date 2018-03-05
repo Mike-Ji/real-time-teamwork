@@ -5476,9 +5476,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_Zones__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Zones */ "./src/components/Zones.js");
+/* harmony import */ var _components_Home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Home */ "./src/components/Home.js");
 
 
+//import Zones from './components/Zones'
 
 
 class App extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
@@ -5487,12 +5488,163 @@ class App extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 			'div',
 			null,
 			'Hello React!',
-			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Zones__WEBPACK_IMPORTED_MODULE_2__["default"], null)
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Home__WEBPACK_IMPORTED_MODULE_2__["default"], null)
 		);
 	}
 }
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('root'));
+
+/***/ }),
+
+/***/ "./src/components/Comment.js":
+/*!***********************************!*\
+  !*** ./src/components/Comment.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+class Comment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+
+	render() {
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'div',
+			{ style: { fontSize: 20, fontWeight: 400 } },
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'p',
+				null,
+				this.props.currentComment.body
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'span',
+				{ style: { fontWeight: 200 } },
+				this.props.currentComment.username
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'span',
+				{ style: { fontWeight: 200, marginLeft: 12, marginRight: 12 } },
+				'|'
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'span',
+				{ style: { fontWeight: 200 } },
+				this.props.currentComment.timestamp
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Comment);
+
+/***/ }),
+
+/***/ "./src/components/Comments.js":
+/*!************************************!*\
+  !*** ./src/components/Comments.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comment */ "./src/components/Comment.js");
+/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./styles */ "./src/components/styles.js");
+
+
+
+
+class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+
+	constructor() {
+		super();
+		this.state = {
+			list: [{ body: 'comment 1', username: 'user 1', timestamp: '10:30' }, { body: 'comment 2', username: 'user 2', timestamp: '10:45' }, { body: 'comment 3', username: 'user 3', timestamp: '10:50' }]
+		};
+	}
+
+	render() {
+		const commentList = this.state.list.map((comment, i) => {
+			return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'li',
+				null,
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], { currentComment: comment })
+			);
+		});
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'div',
+			null,
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'h2',
+				null,
+				'Comments: Zone 1'
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'div',
+				{ style: _styles__WEBPACK_IMPORTED_MODULE_2__["default"].comment.commentBox },
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'ul',
+					{ style: _styles__WEBPACK_IMPORTED_MODULE_2__["default"].comment.commentsList },
+					commentList
+				)
+			)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Comments);
+
+/***/ }),
+
+/***/ "./src/components/Home.js":
+/*!********************************!*\
+  !*** ./src/components/Home.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Zones__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Zones */ "./src/components/Zones.js");
+/* harmony import */ var _Comments__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Comments */ "./src/components/Comments.js");
+
+
+
+
+class Home extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+	render() {
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'div',
+			{ className: 'container' },
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'div',
+				{ className: 'row' },
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'div',
+					{ className: 'col-md-4' },
+					react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Zones__WEBPACK_IMPORTED_MODULE_1__["default"], null)
+				),
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'div',
+					{ className: 'col-md-8' },
+					react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Comments__WEBPACK_IMPORTED_MODULE_2__["default"], null)
+				)
+			)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Home);
 
 /***/ }),
 
@@ -5529,13 +5681,13 @@ class Zone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 			),
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'span',
-				null,
+				{ className: 'detail' },
 				this.props.currentZone.zipCode
 			),
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'span',
-				null,
+				{ className: 'detail' },
 				this.props.currentZone.numComments,
 				' comments'
 			)
@@ -5615,6 +5767,17 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
 	universal: {},
+
+	comment: {
+		commentsBox: {
+			padding: 12,
+			background: '#f9f9f9',
+			boarder: '1px solid #ddd'
+		},
+		commentsList: {
+			listStyleType: 'none'
+		}
+	},
 	zone: {
 		container: {
 			padding: 16,
