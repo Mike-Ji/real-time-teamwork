@@ -23,7 +23,7 @@ module.exports = {
 	
 	create: function(params, callback){
 		
-		var zips = params['zipCodes'];
+		var zips = params['body'];
 		var zip = zips.split(',');
 		var newZips = [];
 		
@@ -31,7 +31,7 @@ module.exports = {
 			newZips.push(zipCode.trim())
 		})
 		
-		params['zipCodes'] = newZips;
+		params['body'] = newZips;
 		
 		Comment.create(params, function(err, comment){
 			if (err){
