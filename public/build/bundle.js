@@ -5476,6 +5476,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_Zones__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Zones */ "./src/components/Zones.js");
+
 
 
 
@@ -5484,12 +5486,147 @@ class App extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 			'div',
 			null,
-			'Hello React!'
+			'Hello React!',
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Zones__WEBPACK_IMPORTED_MODULE_2__["default"], null)
 		);
 	}
 }
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('root'));
+
+/***/ }),
+
+/***/ "./src/components/Zone.js":
+/*!********************************!*\
+  !*** ./src/components/Zone.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles */ "./src/components/styles.js");
+
+
+
+class Zone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+	render() {
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'div',
+			{ style: _styles__WEBPACK_IMPORTED_MODULE_1__["default"].container },
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'h2',
+				{ style: _styles__WEBPACK_IMPORTED_MODULE_1__["default"].header },
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'a',
+					{ style: _styles__WEBPACK_IMPORTED_MODULE_1__["default"].title, href: '#' },
+					this.props.currentZone.name
+				)
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'span',
+				null,
+				this.props.currentZone.zipCode
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'span',
+				null,
+				this.props.currentZone.numComments,
+				' comments'
+			)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Zone);
+
+/***/ }),
+
+/***/ "./src/components/Zones.js":
+/*!*********************************!*\
+  !*** ./src/components/Zones.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Zone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Zone */ "./src/components/Zone.js");
+
+
+
+class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+	render() {
+		const Zone1 = { name: "Zone 1", zipCode: "10012", numComments: 10 };
+		const Zone2 = { name: "Zone 2", zipCode: "10012", numComments: 10 };
+		const Zone3 = { name: "Zone 3", zipCode: "10012", numComments: 10 };
+		const Zone4 = { name: "Zone 4", zipCode: "10012", numComments: 10 };
+
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'div',
+			null,
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'ol',
+				null,
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'li',
+					null,
+					react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Zone__WEBPACK_IMPORTED_MODULE_1__["default"], { currentZone: Zone1 })
+				),
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'li',
+					null,
+					react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Zone__WEBPACK_IMPORTED_MODULE_1__["default"], { currentZone: Zone2 })
+				),
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'li',
+					null,
+					react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Zone__WEBPACK_IMPORTED_MODULE_1__["default"], { currentZone: Zone3 })
+				),
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+					'li',
+					null,
+					react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Zone__WEBPACK_IMPORTED_MODULE_1__["default"], { currentZone: Zone4 })
+				)
+			)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Zones);
+
+/***/ }),
+
+/***/ "./src/components/styles.js":
+/*!**********************************!*\
+  !*** ./src/components/styles.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+	container: {
+		padding: 16,
+		backgorund: '#f9f9f9',
+		marginTop: 12,
+		border: '1px solid #ddd'
+	},
+	header: {
+		marginTop: 0,
+		marginBottom: 0
+	},
+	title: {
+		textDecoration: 'none',
+		color: 'red'
+	}
+});
 
 /***/ })
 
