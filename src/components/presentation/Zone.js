@@ -5,6 +5,8 @@ class Zone extends Component{
 	
 	render(){
 		const zoneStyle = styles.zone;
+		const zipCode = this.props.currentZone.zipCodes[0];
+		
 		return(
 			<div style={zoneStyle.container}>
 				<h2 style={zoneStyle.header}>
@@ -13,7 +15,7 @@ class Zone extends Component{
 					</a>
 				</h2>
 				<span className="detail">
-						{this.props.currentZone.zipCode}
+						{zipCode}
 				</span><br />
 				<span className="detail">
 						{this.props.currentZone.numComments} comments
