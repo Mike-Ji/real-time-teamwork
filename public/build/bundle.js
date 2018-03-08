@@ -7600,6 +7600,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./styles */ "./src/components/containers/styles.js");
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
+
 
 
 
@@ -7621,16 +7623,13 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	}
 
 	componentDidMount() {
-		superagent__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/comment').query(null).set('Accept', 'application/json').end((err, response) => {
+		_utils__WEBPACK_IMPORTED_MODULE_4__["APIManager"].get('/api/zone', null, (err, response) => {
 			if (err) {
-				alert('ERROR: ' + err);
+				alert('ERROR: ' + err.message);
 				return;
 			}
-
-			console.log(JSON.stringify(response.body));
-			let results = response.body.results;
 			this.setState({
-				list: results
+				list: response.results
 			});
 		});
 	}
@@ -7775,10 +7774,22 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 	addZone() {
 		console.log('ADD ZONE: ' + JSON.stringify(this.state.zone));
-		let updatedList = Object.assign([], this.state.list);
-		updatedList.push(this.state.zone);
-		this.setState({
-			list: updatedList
+
+		let updatedZone = Object.assign({}, this.state.zone);
+		updatedZone['zipCodes'] = updatedZone.zipCode.split('.');
+
+		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].post('/api/zone', updatedZone, (err, response) => {
+			if (err) {
+				alert('ERROR: ' + err.message);
+				return;
+			}
+
+			console.log('ZONE CREATED: ' + JSON.stringify(response));
+			let updatedList = Object.assign([], this.state.list);
+			updatedList.push(response.result);
+			this.setState({
+				list: updatedList
+			});
 		});
 	}
 
@@ -8075,11 +8086,27 @@ __webpack_require__.r(__webpack_exports__);
 				callback({ message: response.body.message }, null);
 				return;
 			}
+
 			callback(null, response.body);
 		});
 	},
 
-	post: () => {},
+	post: (url, body, callback) => {
+		superagent__WEBPACK_IMPORTED_MODULE_0___default.a.post(url).send(body).set('Accept', 'application/json').end((err, response) => {
+			if (err) {
+				callback(err, null);
+				return;
+			}
+
+			const confirmation = response.body.confirmation;
+			if (confirmation != 'success') {
+				callback({ message: response.body.message }, null);
+				return;
+			}
+
+			callback(null, response.body);
+		});
+	},
 
 	put: () => {},
 

@@ -40,10 +40,23 @@ class Zones extends Component{
 	
 	addZone(){
 		console.log('ADD ZONE: ' + JSON.stringify(this.state.zone));
-		let updatedList = Object.assign([], this.state.list);
-		updatedList.push(this.state.zone);
-		this.setState({
-			list: updatedList
+		
+		let updatedZone = Object.assign({}, this.state.zone);
+		updatedZone['zipCodes'] = updatedZone.zipCode.split('.')
+		
+		APIManager.post('/api/zone', updatedZone, (err, response) => {
+			if (err){
+				alert('ERROR: ' + err.message)
+				return
+			}
+			
+			console.log('ZONE CREATED: ' + JSON.stringify(response))
+			let updatedList = Object.assign([], this.state.list);
+			updatedList.push(response.result);
+			this.setState({
+				list: updatedList
+			})
+			
 		})
 	}
 	
