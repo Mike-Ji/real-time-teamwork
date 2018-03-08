@@ -7598,6 +7598,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _presentation_Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presentation/Comment */ "./src/components/presentation/Comment.js");
 /* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./styles */ "./src/components/containers/styles.js");
+/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
+/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -7615,6 +7618,21 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 			list: []
 		};
+	}
+
+	componentDidMount() {
+		superagent__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/comment').query(null).set('Accept', 'application/json').end((err, response) => {
+			if (err) {
+				alert('ERROR: ' + err);
+				return;
+			}
+
+			console.log(JSON.stringify(response.body));
+			let results = response.body.results;
+			this.setState({
+				list: results
+			});
+		});
 	}
 
 	submitComment() {
@@ -7714,6 +7732,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _presentation_Zone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presentation/Zone */ "./src/components/presentation/Zone.js");
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
+
 
 
 
@@ -7733,16 +7753,13 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	componentDidMount() {
 		console.log('componentDidMount: ');
 
-		superagent__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/zone').query(null).set('Accept', 'application/json').end((err, response) => {
+		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].get('/api/zone', null, (err, response) => {
 			if (err) {
-				alert('ERROR: ' + err);
+				alert('ERROR: ' + err.message);
 				return;
 			}
-
-			console.log(JSON.stringify(response.body));
-			let results = response.body.results;
 			this.setState({
-				list: results
+				list: response.results
 			});
 		});
 	}
@@ -8029,6 +8046,63 @@ __webpack_require__.r(__webpack_exports__);
 	}
 
 });
+
+/***/ }),
+
+/***/ "./src/utils/APIManager.js":
+/*!*********************************!*\
+  !*** ./src/utils/APIManager.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
+/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_0__);
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	get: (url, params, callback) => {
+		superagent__WEBPACK_IMPORTED_MODULE_0___default.a.get(url).query(params).set('Accept', 'application/json').end((err, response) => {
+			if (err) {
+				callback(err, null);
+				return;
+			}
+
+			const confirmation = response.body.confirmation;
+			if (confirmation != 'success') {
+				callback({ message: response.body.message }, null);
+				return;
+			}
+			callback(null, response.body);
+		});
+	},
+
+	post: () => {},
+
+	put: () => {},
+
+	delete: () => {}
+});
+
+/***/ }),
+
+/***/ "./src/utils/index.js":
+/*!****************************!*\
+  !*** ./src/utils/index.js ***!
+  \****************************/
+/*! exports provided: APIManager */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _APIManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./APIManager */ "./src/utils/APIManager.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "APIManager", function() { return _APIManager__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
+
+
 
 /***/ })
 
