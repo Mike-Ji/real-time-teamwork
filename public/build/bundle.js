@@ -7596,12 +7596,9 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _presentation_Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presentation/Comment */ "./src/components/presentation/Comment.js");
+/* harmony import */ var _presentation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presentation */ "./src/components/presentation/index.js");
 /* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./styles */ "./src/components/containers/styles.js");
-/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
-/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
-
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
 
 
 
@@ -7614,8 +7611,7 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		this.state = {
 			comment: {
 				username: '',
-				body: '',
-				timestamp: ''
+				body: ''
 			},
 
 			list: []
@@ -7623,7 +7619,7 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	}
 
 	componentDidMount() {
-		_utils__WEBPACK_IMPORTED_MODULE_4__["APIManager"].get('/api/zone', null, (err, response) => {
+		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].get('/api/comment', null, (err, response) => {
 			if (err) {
 				alert('ERROR: ' + err.message);
 				return;
@@ -7636,10 +7632,20 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 	submitComment() {
 		console.log('submitComment: ' + JSON.stringify(this.state.comment));
-		let updatedList = Object.assign([], this.state.list);
-		updatedList.push(this.state.comment);
-		this.setState({
-			list: updatedList
+		let updatedComment = Object.assign({}, this.state.comment);
+
+		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].post('/api/comment', updatedComment, (err, response) => {
+			if (err) {
+				alert(err);
+				return;
+			}
+
+			console.log(JSON.stringify(response));
+			let updatedList = Object.assign([], this.state.list);
+			updatedList.push(response.result);
+			this.setState({
+				list: updatedList
+			});
 		});
 	}
 
@@ -7662,20 +7668,12 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		});
 	}
 
-	updateTimestamp(event) {
-		let updatedComment = Object.assign({}, this.state.comment);
-		updatedComment['timestamp'] = event.target.value;
-		this.setState({
-			comment: updatedComment
-		});
-	}
-
 	render() {
 		const commentList = this.state.list.map((comment, i) => {
 			return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'li',
 				{ key: i },
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation_Comment__WEBPACK_IMPORTED_MODULE_1__["default"], { currentComment: comment })
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["Comment"], { currentComment: comment })
 			);
 		});
 		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -7694,20 +7692,7 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 					{ style: _styles__WEBPACK_IMPORTED_MODULE_2__["default"].comment.commentsList },
 					commentList
 				),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { onChange: this.updateUsername.bind(this), className: 'form-control',
-					type: 'text', placeholder: 'Username' }),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { onChange: this.updateBody.bind(this), className: 'form-control',
-					type: 'text', placeholder: 'Comment' }),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { onChange: this.updateTimestamp.bind(this), className: 'form-control',
-					type: 'text', placeholder: 'Timestamp' }),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-					'button',
-					{ onClick: this.submitComment.bind(this), className: 'btn btn-info' },
-					'Submit Comment'
-				)
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["CreateComment"], null)
 			)
 		);
 	}
@@ -7964,6 +7949,64 @@ class Comment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 /***/ }),
 
+/***/ "./src/components/presentation/CreateComment.js":
+/*!******************************************************!*\
+  !*** ./src/components/presentation/CreateComment.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+class CreateComment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+
+	constructor() {
+		super();
+		this.state = {
+			comment: {}
+		};
+	}
+	updateComment(event) {
+		console.log("updateComment: " + event.target.id + " == " + event.target.value);
+		let updatedComment = Onject.assign({}, this.state.comment);
+		updatedComment[event.target.id] = event.target.value;
+		this.setState({
+			comment: updatedComment
+		});
+	}
+
+	render() {
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			"div",
+			null,
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				"h3",
+				null,
+				"Create Comment"
+			),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { onChange: this.updateComment.bind(this), id: "username",
+				className: "form-control", type: "text", placeholder: "Username" }),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { onChange: this.updateComment.bind(this), id: "body",
+				className: "form-control", type: "text", placeholder: "Comment" }),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				"button",
+				{ className: "btn btn-info" },
+				" Submit Comment "
+			)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (CreateComment);
+
+/***/ }),
+
 /***/ "./src/components/presentation/Zone.js":
 /*!*********************************************!*\
   !*** ./src/components/presentation/Zone.js ***!
@@ -8014,6 +8057,32 @@ class Zone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Zone);
+
+/***/ }),
+
+/***/ "./src/components/presentation/index.js":
+/*!**********************************************!*\
+  !*** ./src/components/presentation/index.js ***!
+  \**********************************************/
+/*! exports provided: CreateComment, Comment, Zone */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CreateComment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateComment */ "./src/components/presentation/CreateComment.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreateComment", function() { return _CreateComment__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comment */ "./src/components/presentation/Comment.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Comment", function() { return _Comment__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _Zone__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Zone */ "./src/components/presentation/Zone.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Zone", function() { return _Zone__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+
+
+
+
+
 
 /***/ }),
 
