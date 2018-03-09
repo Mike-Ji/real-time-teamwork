@@ -7650,25 +7650,6 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		});
 	}
 
-	updateUsername(event) {
-		// console.log('updateUsername: ' + event.target.value);
-		// this.state.comment['username'] = event.target.value // WRONG!
-		let updatedComment = Object.assign({}, this.state.comment);
-		updatedComment['username'] = event.target.value;
-		this.setState({
-			comment: updatedComment
-		});
-	}
-
-	updateBody(event) {
-		// console.log('updateBody: ' + event.target.value);
-		let updatedComment = Object.assign({}, this.state.comment);
-		updatedComment['body'] = event.target.value;
-		this.setState({
-			comment: updatedComment
-		});
-	}
-
 	render() {
 		const commentList = this.state.list.map((comment, i) => {
 			return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -7714,11 +7695,8 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _presentation_Zone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presentation/Zone */ "./src/components/presentation/Zone.js");
-/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
-/* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
-
+/* harmony import */ var _presentation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presentation */ "./src/components/presentation/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
 
 
 
@@ -7738,7 +7716,7 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	componentDidMount() {
 		console.log('componentDidMount: ');
 
-		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].get('/api/zone', null, (err, response) => {
+		_utils__WEBPACK_IMPORTED_MODULE_2__["APIManager"].get('/api/zone', null, (err, response) => {
 			if (err) {
 				alert('ERROR: ' + err.message);
 				return;
@@ -7758,13 +7736,14 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		});
 	}
 
-	addZone() {
-		console.log('ADD ZONE: ' + JSON.stringify(this.state.zone));
+	addZone(zone) {
+		//console.log('ADD ZONE: ' + JSON.stringify(this.state.zone));
 
-		let updatedZone = Object.assign({}, this.state.zone);
+		let updatedZone = Object.assign({}, zone);
 		updatedZone['zipCodes'] = updatedZone.zipCode.split('.');
+		console.log('ADD ZONE: ' + JSON.stringify(updatedZone));
 
-		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].post('/api/zone', updatedZone, (err, response) => {
+		_utils__WEBPACK_IMPORTED_MODULE_2__["APIManager"].post('/api/zone', updatedZone, (err, response) => {
 			if (err) {
 				alert('ERROR: ' + err.message);
 				return;
@@ -7784,7 +7763,7 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 			return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'li',
 				{ key: i },
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation_Zone__WEBPACK_IMPORTED_MODULE_1__["default"], { currentZone: zone })
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["Zone"], { currentZone: zone })
 			);
 		});
 
@@ -7796,17 +7775,7 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 				null,
 				listItems
 			),
-			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { id: 'name', onChange: this.updateZone.bind(this), className: 'form-control',
-				type: 'text', placeholder: 'Name' }),
-			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { id: 'zipCode', onChange: this.updateZone.bind(this), className: 'form-control',
-				type: 'text', placeholder: 'Zip Code' }),
-			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-				'button',
-				{ onClick: this.addZone.bind(this), className: 'btn btn-danger' },
-				'Add Zone'
-			)
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["CreateZone"], { onCreate: this.addZone.bind(this) })
 		);
 	}
 }
@@ -8013,6 +7982,63 @@ class CreateComment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 /***/ }),
 
+/***/ "./src/components/presentation/CreateZone.js":
+/*!***************************************************!*\
+  !*** ./src/components/presentation/CreateZone.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+class CreateZone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+	constructor() {
+		super();
+		this.state = {
+			zone: {}
+		};
+	}
+
+	updateZone(event) {
+		let updated = Object.assign({}, this.state.zone);
+		updated[event.target.id] = event.target.value;
+		this.setState({
+			zone: updated
+		});
+	}
+
+	submitZone(event) {
+		console.log('submitZone: ' + JSON.stringify(this.state.zone));
+		this.props.onCreate(this.state.zone);
+	}
+
+	render() {
+		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'div',
+			null,
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { id: 'name', onChange: this.updateZone.bind(this), className: 'form-control',
+				type: 'text', placeholder: 'Name' }),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', { id: 'zipCode', onChange: this.updateZone.bind(this), className: 'form-control',
+				type: 'text', placeholder: 'Zip Code' }),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+				'button',
+				{ onClick: this.submitZone.bind(this), className: 'btn btn-danger' },
+				'Add Zone'
+			)
+		);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (CreateZone);
+
+/***/ }),
+
 /***/ "./src/components/presentation/Zone.js":
 /*!*********************************************!*\
   !*** ./src/components/presentation/Zone.js ***!
@@ -8070,7 +8096,7 @@ class Zone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 /*!**********************************************!*\
   !*** ./src/components/presentation/index.js ***!
   \**********************************************/
-/*! exports provided: CreateComment, Comment, Zone */
+/*! exports provided: CreateComment, CreateZone, Comment, Zone */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8078,11 +8104,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateComment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateComment */ "./src/components/presentation/CreateComment.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreateComment", function() { return _CreateComment__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony import */ var _Comment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comment */ "./src/components/presentation/Comment.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Comment", function() { return _Comment__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony import */ var _CreateZone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateZone */ "./src/components/presentation/CreateZone.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreateZone", function() { return _CreateZone__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
-/* harmony import */ var _Zone__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Zone */ "./src/components/presentation/Zone.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Zone", function() { return _Zone__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony import */ var _Comment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Comment */ "./src/components/presentation/Comment.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Comment", function() { return _Comment__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _Zone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Zone */ "./src/components/presentation/Zone.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Zone", function() { return _Zone__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
 
 
 
