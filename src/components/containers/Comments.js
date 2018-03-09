@@ -30,16 +30,17 @@ class Comments extends Component{
 		})
 	}
 	
-	submitComment(){
-		console.log('submitComment: ' + JSON.stringify(this.state.comment));
-		let updatedComment = Object.assign({}, this.state.comment)
-		
+	submitComment(comment){
+		console.log('submitComment: ' + JSON.stringify(comment));
+		//let updatedComment = Object.assign({}, this.state.comment)
+		let updatedComment = Object.assign({}, comment)
+
 		APIManager.post('/api/comment', updatedComment, (err, response) => {
 			if (err){
 				alert(err)
 				return
 			}
-			
+
 			console.log(JSON.stringify(response));
 			let updatedList = Object.assign([], this.state.list);
 			updatedList.push(response.result);
@@ -82,7 +83,7 @@ class Comments extends Component{
 						{ commentList }
 					</ul>
 						
-					<CreateComment />	
+					<CreateComment onCreate={this.submitComment.bind(this)} />	
 				</div>	
 			</div>
 		)

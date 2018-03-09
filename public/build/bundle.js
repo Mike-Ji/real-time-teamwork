@@ -7630,9 +7630,10 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		});
 	}
 
-	submitComment() {
-		console.log('submitComment: ' + JSON.stringify(this.state.comment));
-		let updatedComment = Object.assign({}, this.state.comment);
+	submitComment(comment) {
+		console.log('submitComment: ' + JSON.stringify(comment));
+		//let updatedComment = Object.assign({}, this.state.comment)
+		let updatedComment = Object.assign({}, comment);
 
 		_utils__WEBPACK_IMPORTED_MODULE_3__["APIManager"].post('/api/comment', updatedComment, (err, response) => {
 			if (err) {
@@ -7692,7 +7693,7 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 					{ style: _styles__WEBPACK_IMPORTED_MODULE_2__["default"].comment.commentsList },
 					commentList
 				),
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["CreateComment"], null)
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["CreateComment"], { onCreate: this.submitComment.bind(this) })
 			)
 		);
 	}
@@ -7972,11 +7973,16 @@ class CreateComment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	}
 	updateComment(event) {
 		console.log("updateComment: " + event.target.id + " == " + event.target.value);
-		let updatedComment = Onject.assign({}, this.state.comment);
+		let updatedComment = Object.assign({}, this.state.comment);
 		updatedComment[event.target.id] = event.target.value;
 		this.setState({
 			comment: updatedComment
 		});
+	}
+
+	submitComment(event) {
+		console.log('submitComment: ' + JSON.stringify(this.state.comment));
+		this.props.onCreate(this.state.comment);
 	}
 
 	render() {
@@ -7996,8 +8002,8 @@ class CreateComment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				"button",
-				{ className: "btn btn-info" },
-				" Submit Comment "
+				{ onClick: this.submitComment.bind(this), className: "btn btn-info" },
+				"Submit Comment"
 			)
 		);
 	}
