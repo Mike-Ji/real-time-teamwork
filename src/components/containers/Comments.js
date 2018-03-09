@@ -8,12 +8,7 @@ class Comments extends Component{
 	
 	constructor(){
 		super()
-		this.state = {
-			comment: {
-				username: '',
-				body: ''
-			},
-			
+		this.state = {			
 			list:[]
 		}
 	}

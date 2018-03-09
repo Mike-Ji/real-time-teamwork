@@ -20,7 +20,9 @@ class CreateZone extends Component{
 	
 	submitZone(event){
 		console.log('submitZone: ' + JSON.stringify(this.state.zone));
-		this.props.onCreate(this.state.zone)
+		let updated = Object.assign({}, this.state.zone)
+		updated['zipCodes'] = updated.zipCode.split(',')
+		this.props.onCreate(updated)
 	}
 	
 	render(){

@@ -7609,11 +7609,6 @@ class Comments extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	constructor() {
 		super();
 		this.state = {
-			comment: {
-				username: '',
-				body: ''
-			},
-
 			list: []
 		};
 	}
@@ -7705,10 +7700,7 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 	constructor() {
 		super();
 		this.state = {
-			zone: {
-				name: '',
-				zipCode: ''
-			},
+			selected: 0,
 			list: []
 		};
 	}
@@ -7727,21 +7719,12 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		});
 	}
 
-	updateZone(event) {
-		console.log('updateZone: ' + event.target.id + ' == ' + event.target.value);
-		let updatedZone = Object.assign({}, this.state.zone);
-		updatedZone[event.target.id] = event.target.value;
-		this.setState({
-			zone: updatedZone
-		});
-	}
-
 	addZone(zone) {
 		//console.log('ADD ZONE: ' + JSON.stringify(this.state.zone));
 
 		let updatedZone = Object.assign({}, zone);
-		updatedZone['zipCodes'] = updatedZone.zipCode.split('.');
-		console.log('ADD ZONE: ' + JSON.stringify(updatedZone));
+		// updatedZone['zipCodes'] = updatedZone.zipCode.split('.')
+		//console.log('ADD ZONE: ' + JSON.stringify(updatedZone))
 
 		_utils__WEBPACK_IMPORTED_MODULE_2__["APIManager"].post('/api/zone', updatedZone, (err, response) => {
 			if (err) {
@@ -7758,12 +7741,21 @@ class Zones extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 		});
 	}
 
+	selectZone(index) {
+		console.log('selecteZone: ' + index);
+		this.setState({
+			selected: index
+		});
+	}
+
 	render() {
 		const listItems = this.state.list.map((zone, i) => {
+			let selected = i == this.state.selected;
 			return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'li',
 				{ key: i },
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["Zone"], { currentZone: zone })
+				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presentation__WEBPACK_IMPORTED_MODULE_1__["Zone"], { index: i, select: this.selectZone.bind(this),
+					isSelected: selected, currentZone: zone })
 			);
 		});
 
@@ -8013,7 +8005,9 @@ class CreateZone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 	submitZone(event) {
 		console.log('submitZone: ' + JSON.stringify(this.state.zone));
-		this.props.onCreate(this.state.zone);
+		let updated = Object.assign({}, this.state.zone);
+		updated['zipCodes'] = updated.zipCode.split(',');
+		this.props.onCreate(updated);
 	}
 
 	render() {
@@ -8056,21 +8050,32 @@ __webpack_require__.r(__webpack_exports__);
 
 class Zone extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
+	onSelectTitle(event) {
+		event.preventDefault();
+		console.log('onSelectTitle: ' + this.props.index);
+		this.props.select(this.props.index);
+	}
+
 	render() {
 		const zoneStyle = _styles__WEBPACK_IMPORTED_MODULE_1__["default"].zone;
 		const zipCode = this.props.currentZone.zipCodes[0];
+		const title = this.props.isSelected ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'a',
+			{ style: zoneStyle.title, href: '#' },
+			this.props.currentZone.name
+		) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+			'a',
+			{ href: '#' },
+			this.props.currentZone.name
+		);
 
 		return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 			'div',
 			{ style: zoneStyle.container },
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'h2',
-				{ style: zoneStyle.header },
-				react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-					'a',
-					{ style: zoneStyle.title, href: '#' },
-					this.props.currentZone.name
-				)
+				{ onClick: this.onSelectTitle.bind(this), style: zoneStyle.header },
+				title
 			),
 			react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
 				'span',
